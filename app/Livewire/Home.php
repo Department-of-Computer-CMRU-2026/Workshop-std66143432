@@ -29,7 +29,7 @@ class Home extends Component
     #[Computed]
     public function userRegistrationCount(): int
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return 0;
         }
 
@@ -39,7 +39,7 @@ class Home extends Component
     #[Computed]
     public function userRegisteredEventIds(): array
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return [];
         }
 
@@ -48,14 +48,14 @@ class Home extends Component
 
     public function register(int $eventId): void
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             $this->redirectRoute('login');
 
             return;
         }
 
         if ($this->userRegistrationCount >= self::MAX_REGISTRATIONS) {
-            session()->flash('error', 'คุณสามารถลงทะเบียนได้สูงสุด ' . self::MAX_REGISTRATIONS . ' หัวข้อเท่านั้น');
+            session()->flash('error', 'คุณสามารถลงทะเบียนได้สูงสุด '.self::MAX_REGISTRATIONS.' หัวข้อเท่านั้น');
 
             return;
         }
@@ -84,7 +84,7 @@ class Home extends Component
 
     public function unregister(int $eventId): void
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             $this->redirectRoute('login');
 
             return;
