@@ -1,75 +1,162 @@
 <div>
     <nav class="nav">
-        <div class="nav-brand">Senior<span>→</span>Junior<span> WS</span></div>
-        <div class="nav-links">
-            @auth
-                <div class="nav-user">
-                    <div class="avatar">{{ auth()->user()->initials() }}</div>
-                    <span class="nav-user-name">{{ auth()->user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="btn-nav btn-nav-outline">ออกจากระบบ</button>
-                    </form>
+        <div class="nav-container">
+            <a href="{{ route('home') }}" class="brand-logo">
+                <div class="brand-icon-glass">S<span>/</span>J</div>
+                <div class="brand-text-minimal">
+                    <span class="title">Senior to Junior</span>
+                    <span class="subtitle">Workshop 2026</span>
                 </div>
-            @else
-                <a href="{{ route('login') }}" class="btn-nav btn-nav-ghost">เข้าสู่ระบบ</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn-nav btn-nav-primary">สมัครสมาชิก</a>
-                @endif
-            @endauth
+            </a>
+            <div class="nav-links">
+                @auth
+                    <div class="nav-user">
+                        <div class="avatar">{{ auth()->user()->initials() }}</div>
+                        <span class="nav-user-name">{{ auth()->user()->name }}</span>
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="btn-nav btn-nav-primary">⚙ Admin</a>
+                        @else
+                            <span
+                                style="font-size: 0.78rem; padding: 0.3rem 0.7rem; border-radius: 100px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); color: var(--primary-light); white-space: nowrap;">{{ $this->userRegistrationCount }}/{{ \App\Livewire\Home::MAX_REGISTRATIONS }}
+                                หัวข้อ</span>
+                        @endif
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn-nav btn-nav-outline">ออกจากระบบ</button>
+                        </form>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn-nav btn-nav-ghost">เข้าสู่ระบบ</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="btn-nav btn-nav-primary">สมัครสมาชิก</a>
+                    @endif
+                @endauth
+            </div>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-badge">⚡ งานวิชาการ 2026</div>
-        <h1>Senior-to-Junior<br>Workshop</h1>
-        <p class="hero-sub">รุ่นพี่ถ่ายทอดประสบการณ์และความรู้สู่รุ่นน้อง เลือกหัวข้อที่คุณสนใจ
-            จำกัดจำนวนที่นั่งเพื่อคุณภาพในการเรียนรู้</p>
-        <div class="hero-meta">
-            <div class="hero-meta-item">
-                <div class="hero-meta-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2" style="color: var(--primary-light)">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+    @guest
+        <section class="hero">
+            <div class="hero-badge">⚡ งานวิชาการ 2026</div>
+            <h1>Senior-to-Junior<br>Workshop</h1>
+            <p class="hero-sub">รุ่นพี่ถ่ายทอดประสบการณ์และความรู้สู่รุ่นน้อง เลือกหัวข้อที่คุณสนใจ
+                จำกัดจำนวนที่นั่งเพื่อคุณภาพในการเรียนรู้</p>
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <div class="hero-meta-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" style="color: var(--primary-light)">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    มีนาคม 2026
                 </div>
-                มีนาคม 2026
-            </div>
-            <div class="hero-meta-item">
-                <div class="hero-meta-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2" style="color: var(--accent)">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
+                <div class="hero-meta-item">
+                    <div class="hero-meta-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" style="color: var(--accent)">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    มหาวิทยาลัยราชภัฏเชียงใหม่
                 </div>
-                มหาวิทยาลัยราชภัฏเชียงใหม่
-            </div>
-            <div class="hero-meta-item">
-                <div class="hero-meta-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2" style="color: var(--success)">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
+                <div class="hero-meta-item">
+                    <div class="hero-meta-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" style="color: var(--success)">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    {{ $events->count() }} หัวข้อ Workshop
                 </div>
-                {{ $events->count() }} หัวข้อ Workshop
             </div>
-        </div>
-    </section>
+        </section>
+    @endguest
 
     @if (session('success'))
-        <div class="flash-container">
+        <div class="flash-container" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+            x-transition.duration.500ms>
             <div class="flash flash-success">✅ {{ session('success') }}</div>
         </div>
     @endif
     @if (session('error'))
-        <div class="flash-container">
+        <div class="flash-container" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+            x-transition.duration.500ms>
             <div class="flash flash-error">⚠️ {{ session('error') }}</div>
         </div>
     @endif
+
+    @auth
+        @if(count($this->userRegisteredEventIds) > 0)
+            <section class="events-section" style="padding-bottom: 2rem;">
+                <div class="section-title">✨ หัวข้อที่คุณลงทะเบียนไว้แล้ว</div>
+                <p class="section-sub">คลิกที่ปุ่มยกเลิก หากคุณต้องการเปลี่ยนใจเพื่อเปิดโอกาสให้ผู้ที่สนใจท่านอื่น</p>
+
+                <div class="events-grid">
+                    @php $avatarClasses = ['av-1', 'av-2', 'av-3', 'av-4', 'av-5', 'av-6']; @endphp
+                    @foreach($events->whereIn('id', $this->userRegisteredEventIds) as $event)
+                        @php
+                            $registeredCount = $event->registrations_count;
+                            $available = max(0, $event->total_seats - $registeredCount);
+                            $fillPct = $event->total_seats > 0 ? min(100, ($registeredCount / $event->total_seats) * 100) : 0;
+                            $barColor = $fillPct >= 90 ? 'red' : ($fillPct >= 60 ? 'amber' : 'green');
+                            $avatarClass = $avatarClasses[$loop->index % count($avatarClasses)];
+                            $words = preg_split('/\s+/', trim($event->speaker));
+                            $initials = implode('', array_map(fn($w) => mb_substr($w, 0, 1), array_slice($words, 0, 2)));
+                        @endphp
+                        <div class="event-card"
+                            style="border-color: rgba(52, 211, 153, 0.4); box-shadow: 0 4px 24px rgba(52, 211, 153, 0.1), inset 0 1px 0 rgba(255, 255, 255, .1);"
+                            wire:key="registered-event-{{ $event->id }}">
+                            <div class="event-card-header">
+                                <div class="event-title">{{ $event->title }}</div>
+                                <span class="badge badge-registered">✓ ลงทะเบียนแล้ว</span>
+                            </div>
+
+                            <div class="event-meta">
+                                <div class="event-meta-row">
+                                    <svg class="event-meta-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {{ $event->location }}
+                                </div>
+                            </div>
+
+                            <div class="seat-info">
+                                <div class="seat-bar-bg">
+                                    <div class="seat-bar-fill {{ $barColor }}" style="width: {{ $fillPct }}%"></div>
+                                </div>
+                                <div class="seat-text">
+                                    <span>ที่นั่งที่เหลือ: <strong>{{ $available }}/{{ $event->total_seats }}</strong></span>
+                                    <span>{{ round($fillPct) }}% เต็ม</span>
+                                </div>
+                            </div>
+
+                            <div class="speaker-block">
+                                <div class="speaker-avatar {{ $avatarClass }}">{{ $initials }}</div>
+                                <div>
+                                    <div class="speaker-name">{{ $event->speaker }}</div>
+                                    <div class="speaker-role">วิทยากร</div>
+                                </div>
+                            </div>
+
+                            <button class="btn-register btn-register-full" wire:click="unregister({{ $event->id }})"
+                                wire:confirm="คุณแน่ใจหรือไม่ที่จะยกเลิกการลงทะเบียนหัวข้อนี้?" wire:loading.attr="disabled"
+                                style="cursor: pointer; background: rgba(248, 113, 113, .15);">
+                                ❌ ยกเลิกการลงทะเบียน
+                            </button>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+    @endauth
 
     <section class="events-section">
         <div class="section-title">🎯 เลือกหัวข้อที่คุณสนใจ</div>
@@ -89,7 +176,8 @@
                         $available = max(0, $event->total_seats - $registeredCount);
                         $isFull = $available <= 0;
                         $fillPct = $event->total_seats > 0 ? min(100, ($registeredCount / $event->total_seats) * 100) : 0;
-                        $isRegistered = auth()->check() && auth()->user()->registrations()->where('event_id', $event->id)->exists();
+                        $isRegistered = in_array($event->id, $this->userRegisteredEventIds);
+                        $atLimit = $this->userRegistrationCount >= \App\Livewire\Home::MAX_REGISTRATIONS;
                         $barColor = $fillPct >= 90 ? 'red' : ($fillPct >= 60 ? 'amber' : 'green');
                         $avatarClass = $avatarClasses[$loop->index % count($avatarClasses)];
                         $words = preg_split('/\s+/', trim($event->speaker));
@@ -146,6 +234,10 @@
                         @elseif($isFull)
                             <button class="btn-register btn-register-full" disabled>
                                 ❌ ขออภัย ที่นั่งเต็มแล้ว
+                            </button>
+                        @elseif(auth()->check() && $atLimit)
+                            <button class="btn-register btn-register-full" disabled title="ลงทะเบียนครบ 3 หัวข้อแล้ว">
+                                🚫 ครบ {{ \App\Livewire\Home::MAX_REGISTRATIONS }} หัวข้อแล้ว
                             </button>
                         @else
                             <button class="btn-register btn-register-primary" wire:click="register({{ $event->id }})"

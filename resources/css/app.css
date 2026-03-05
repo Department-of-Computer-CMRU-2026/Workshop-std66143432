@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,7 +9,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
@@ -37,7 +40,6 @@
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -52,7 +54,7 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -61,6 +63,314 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* ─── LIQUID GLASS THEME ─────────────────────────────────────────── */
+
+:root {
+    --lg-primary: #818cf8;
+    --lg-primary-dark: #6366f1;
+    --lg-accent: #f59e0b;
+    --lg-bg: #06061a;
+    --lg-orb1: rgba(99, 102, 241, 0.55);
+    --lg-orb2: rgba(168, 85, 247, 0.42);
+    --lg-orb3: rgba(6, 182, 212, 0.35);
+    --lg-glass-bg: rgba(255, 255, 255, 0.06);
+    --lg-glass-border: rgba(255, 255, 255, 0.14);
+    --lg-glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+    --lg-text: #f0f4ff;
+    --lg-text-muted: #94a3b8;
+    --lg-text-dim: #546178;
+    --lg-radius: 1.125rem;
+}
+
+/* Aurora animated background */
+.lg-bg-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--lg-bg);
+    overflow: hidden;
+    pointer-events: none;
+}
+.lg-bg-aurora::before,
+.lg-bg-aurora::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    animation: lg-drift 18s ease-in-out infinite alternate;
+}
+.lg-bg-aurora::before {
+    width: 75vw;
+    height: 65vh;
+    background: radial-gradient(ellipse, var(--lg-orb1) 0%, transparent 70%);
+    top: -20%;
+    left: -15%;
+}
+.lg-bg-aurora::after {
+    width: 65vw;
+    height: 60vh;
+    background: radial-gradient(ellipse, var(--lg-orb2) 0%, transparent 70%);
+    bottom: -15%;
+    right: -10%;
+    animation-delay: -9s;
+}
+.lg-orb-3 {
+    position: fixed;
+    z-index: -1;
+    pointer-events: none;
+    width: 50vw;
+    height: 45vh;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, var(--lg-orb3) 0%, transparent 70%);
+    filter: blur(95px);
+    bottom: 10%;
+    left: 25%;
+    animation: lg-drift 22s ease-in-out infinite alternate;
+    animation-delay: -5s;
+}
+
+@keyframes lg-drift {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(3%, 5%) scale(1.06);
+    }
+    66% {
+        transform: translate(-4%, 2%) scale(0.95);
+    }
+    100% {
+        transform: translate(2%, -4%) scale(1.03);
+    }
+}
+
+/* ─── MODERN MINIMAL LOGO ────────────────────────────────────────── */
+.brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    user-select: none;
+    transition: transform 0.2s;
+}
+.brand-logo:hover {
+    transform: translateY(-1px);
+}
+.brand-icon-glass {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(124,58,237,0.25));
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c7d2fe;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -0.05em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
+    font-family: 'Inter', sans-serif;
+}
+.brand-icon-glass span {
+    color: var(--lg-accent);
+}
+.brand-text-minimal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.15;
+}
+.brand-text-minimal .title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--lg-text);
+    letter-spacing: -0.01em;
+}
+.brand-text-minimal .subtitle {
+    font-size: 0.62rem;
+    color: var(--lg-accent);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Glass panel */
+.lg-panel {
+    background: var(--lg-glass-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--lg-glass-border);
+    border-radius: var(--lg-radius);
+    box-shadow:
+        var(--lg-glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Auth page wrapper */
+.lg-auth-bg {
+    min-height: 100dvh;
+    background: var(--lg-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1.5rem;
+}
+
+/* Auth glass card */
+.lg-auth-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(36px) saturate(200%);
+    -webkit-backdrop-filter: blur(36px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem 2.25rem;
+}
+
+/* Override Flux inputs inside auth card */
+.lg-auth-card [data-flux-input] input,
+.lg-auth-card input[type="email"],
+.lg-auth-card input[type="password"],
+.lg-auth-card input[type="text"],
+.lg-auth-card input {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    color: var(--lg-text) !important;
+    border-radius: 0.625rem !important;
+}
+.lg-auth-card input:focus {
+    border-color: var(--lg-primary) !important;
+    background: rgba(99, 102, 241, 0.08) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    outline: none !important;
+}
+.lg-auth-card label,
+.lg-auth-card [data-flux-label],
+.lg-auth-card [data-flux-description] {
+    color: var(--lg-text-muted) !important;
+    font-size: 0.82rem !important;
+}
+.lg-auth-card a {
+    color: var(--lg-primary) !important;
+}
+.lg-auth-card h1,
+.lg-auth-card h2,
+.lg-auth-card [data-flux-heading] {
+    color: var(--lg-text) !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+}
+.lg-auth-card [data-flux-subheading],
+.lg-auth-card p {
+    color: var(--lg-text-muted) !important;
+}
+/* Primary submit button */
+.lg-auth-card button[type="submit"],
+.lg-auth-card [data-flux-button][data-variant="primary"],
+.lg-auth-card [data-type="primary"] {
+    background: linear-gradient(
+        135deg,
+        var(--lg-primary-dark),
+        #7c3aed
+    ) !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.45) !important;
+    color: #fff !important;
+    border-radius: 0.625rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s !important;
+}
+.lg-auth-card button[type="submit"]:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 28px rgba(99, 102, 241, 0.6) !important;
+}
+
+/* Error messages */
+.lg-auth-card [data-flux-error] {
+    color: #fca5a5 !important;
+    font-size: 0.78rem !important;
+}
+
+/* Checkboxes */
+.lg-auth-card [data-flux-checkbox] {
+    accent-color: var(--lg-primary-dark) !important;
+}
+
+/* Admin sidebar glass */
+.lg-sidebar {
+    background: rgba(6, 6, 26, 0.72);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-right: 1px solid var(--lg-glass-border);
+}
+
+/* Admin topbar */
+.lg-topbar {
+    background: rgba(6, 6, 26, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--lg-glass-border);
+}
+
+/* Glass card for admin content */
+.lg-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid var(--lg-glass-border);
+    border-radius: var(--lg-radius);
+    box-shadow: var(--lg-glass-shadow);
+}
+
+/* Glass button */
+.lg-btn-ghost {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--lg-glass-border);
+    color: var(--lg-text-muted);
+    border-radius: 0.625rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    backdrop-filter: blur(8px);
+}
+.lg-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: var(--lg-text);
+}
+.lg-btn-primary {
+    background: linear-gradient(135deg, var(--lg-primary-dark), #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 0.625rem;
+    padding: 0.55rem 1.1rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.lg-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(99, 102, 241, 0.55);
+}

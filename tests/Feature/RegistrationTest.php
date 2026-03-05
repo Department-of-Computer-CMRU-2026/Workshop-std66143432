@@ -52,3 +52,20 @@ test('unauthenticated user is redirected when trying to register', function () {
         ->call('register', $event->id)
         ->assertRedirect(route('login'));
 });
+
+test('user cannot register for more than 3 events', function () {
+    $user = User::factory()->create();
+    $events = Event::factory()->count(4)->create(['total_seats' => 30]);
+
+    // Register for 3 events
+    foreach ($events->take(3) as $event) {
+        Registration::create(['user_id' => $user->id, 'event_id' => $event->id]);
+    }
+
+    // Try to register for the 4th
+    \Livewire\Livewire::actingAs($user)
+        ->test(Home::class)
+        ->call('register', $events->last()->id);
+
+    expect(Registration::where('user_id', $user->id)->count())->toBe(3);
+});

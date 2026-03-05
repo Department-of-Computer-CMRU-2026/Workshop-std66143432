@@ -1,22 +1,30 @@
 <div>
     <nav class="nav">
-        <div class="nav-brand">Senior<span>→</span>Junior<span> WS</span></div>
-        <div class="nav-links">
-            @auth
-                <div class="nav-user">
-                    <div class="avatar">{{ auth()->user()->initials() }}</div>
-                    <span class="nav-user-name">{{ auth()->user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="btn-nav btn-nav-outline">ออกจากระบบ</button>
-                    </form>
+        <div class="nav-container">
+            <a href="{{ route('home') }}" class="brand-logo">
+                <div class="brand-icon-glass">S<span>/</span>J</div>
+                <div class="brand-text-minimal">
+                    <span class="title">Senior to Junior</span>
+                    <span class="subtitle">Workshop 2026</span>
                 </div>
-            @else
-                <a href="{{ route('login') }}" class="btn-nav btn-nav-ghost">เข้าสู่ระบบ</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn-nav btn-nav-primary">สมัครสมาชิก</a>
-                @endif
-            @endauth
+            </a>
+            <div class="nav-links">
+                @auth
+                    <div class="nav-user">
+                        <div class="avatar">{{ auth()->user()->initials() }}</div>
+                        <span class="nav-user-name">{{ auth()->user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn-nav btn-nav-outline">ออกจากระบบ</button>
+                        </form>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn-nav btn-nav-ghost">เข้าสู่ระบบ</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="btn-nav btn-nav-primary">สมัครสมาชิก</a>
+                    @endif
+                @endauth
+            </div>
         </div>
     </nav>
 
@@ -61,12 +69,14 @@
     </section>
 
     @if (session('success'))
-        <div class="flash-container">
+        <div class="flash-container" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+            x-transition.duration.500ms>
             <div class="flash flash-success">✅ {{ session('success') }}</div>
         </div>
     @endif
     @if (session('error'))
-        <div class="flash-container">
+        <div class="flash-container" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+            x-transition.duration.500ms>
             <div class="flash flash-error">⚠️ {{ session('error') }}</div>
         </div>
     @endif
