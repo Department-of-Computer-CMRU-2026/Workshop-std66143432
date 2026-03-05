@@ -44,37 +44,42 @@ jobs:
 
       - name: Restore and Update .env
         run: |
-          # 1. จัดการตัวไฟล์ .env ก่อน
+          # Save only APP_KEY from the old .env (if it exists and is valid)
+          SAVED_APP_KEY=""
           if [ -f ${{ env.BACKUP_DIR }}/.env.backup ]; then
-            cp ${{ env.BACKUP_DIR }}/.env.backup .env
-            echo "Restored .env from backup"
-          else
-            cp .env.example .env
-            echo "Created .env from .env.example"
+            SAVED_APP_KEY=$(grep '^APP_KEY=' ${{ env.BACKUP_DIR }}/.env.backup | head -1 | cut -d '=' -f2- | tr -d '\r')
           fi
 
-          echo "" >> .env
+          # Always start fresh from .env.example to avoid corrupt state
+          cp .env.example .env
+          printf "\n" >> .env
 
-          # 2. 🟢 ประกาศฟังก์ชันไว้นอก if เพื่อให้เรียกใช้ได้ทุกครั้ง
+          # Helper function to set/update a value in .env
           update_env() {
-            sed -i "/^#*$1=/d" .env
-            echo "$1=$2" >> .env
+            sed -i "/^[# ]*$1=/d" .env
+            printf "\n%s=%s" "$1" "$2" >> .env
           }
 
-          # 3. 🟢 Force Sync Config from .env.example (Read from .env.example for everything)
-          # This ensures .env always matches the repo's config for these keys
-          # Sync config keys from .env.example (ยกเว้น DB_HOST ที่ต้อง set แบบ dynamic)
+          # Force sync config keys from .env.example
           KEYS="STUDENT_ID STUDENT_NAME COMPOSE_PROJECT_NAME STUDENT_PORT FORWARD_DB_PORT DB_CONNECTION DB_PORT DB_DATABASE DB_USERNAME DB_PASSWORD"
-
           for KEY in $KEYS; do
              VAL=$(grep "^$KEY=" .env.example | cut -d '=' -f2- | tr -d '\r')
-             if [ ! -z "$VAL" ]; then
+             if [ -n "$VAL" ]; then
                 update_env "$KEY" "$VAL"
              fi
           done
 
-          # 🟢 Set DB_HOST dynamically ให้ตรงกับ container name จริง
+          # Set DB_HOST dynamically to match container name
           update_env "DB_HOST" "${STUDENT_NAME}-db"
+
+          # Restore APP_KEY if we had one (so existing sessions/encrypted data still work)
+          if [ -n "$SAVED_APP_KEY" ]; then
+            update_env "APP_KEY" "$SAVED_APP_KEY"
+          fi
+
+          # Delete old corrupt backup, start fresh
+          rm -f ${{ env.BACKUP_DIR }}/.env.backup
+          printf "\n" >> .env
 
       - name: Stop Existing Containers
         run: |
