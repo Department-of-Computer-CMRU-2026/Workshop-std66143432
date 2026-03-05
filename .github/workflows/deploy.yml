@@ -1,9 +1,10 @@
-name: Smart-Class Auto Deploy (Self-hosted)
-
-on: push: branches: [ "main" ]
-
-jobs: deploy: runs-on: [self-hosted, web-deploy]
-steps:
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  deploy:
+    runs-on: [self-hosted, web-deploy]
+    steps:
   - name: Prepare Environment Variables
     run: |
       # Try to get STUDENT_ID from .env.example if it exists (prioritize repo config)
