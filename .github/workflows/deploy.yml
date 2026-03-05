@@ -53,6 +53,8 @@ jobs:
             echo "Created .env from .env.example"
           fi
 
+          echo "" >> .env
+
           # 2. 🟢 ประกาศฟังก์ชันไว้นอก if เพื่อให้เรียกใช้ได้ทุกครั้ง
           update_env() {
             sed -i "/^#*$1=/d" .env
